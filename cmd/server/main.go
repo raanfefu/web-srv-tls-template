@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/common-nighthawk/go-figure"
-	"github.com/raanfefu/web-srv-tls-template/pkg/dummy"
+	"github.com/raanfefu/web-srv-tls-template/pkg/cfg"
 	"github.com/raanfefu/web-srv-tls-template/pkg/server"
 )
 
@@ -16,9 +16,10 @@ func show() {
 
 func main() {
 	show()
-	s := server.NewServer()
-	s.CheckServerParams()
-	s.InitServer()
-	s.AddEndpoint("/a", dummy.DummyHandler, "GET", "POST")
-	s.StartServer()
+	cfgs := cfg.NewConfiguration()
+	server := server.NewServer()
+	cfgs.RegistryService("w", server)
+	cfgs.LoadConfiguration()
+	server.InitServer()
+	server.StartServer()
 }
